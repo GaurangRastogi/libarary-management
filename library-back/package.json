@@ -1,0 +1,11 @@
+{
+  "name": "library-back",
+  "version": "1.0.0",
+  "description": "Backend for lib-management",
+  "main": "app.js",
+  "scripts": {
+    "test": "npm run"
+  },
+  "author": "GR",
+  "license": "ISC"
+}
