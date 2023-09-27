@@ -1,13 +1,19 @@
 
 
-import {Link} from "react-router-dom"
+import {Link, useNavigate} from "react-router-dom"
 import React, { useEffect, useState } from "react";
 import GoogleLoginComponent from "../../component/google/login";
 // import { GoogleLogin } from "@react-oauth/google";
+import { useDispatch} from "react-redux";
+import { setLogin } from "../../state/index";
+
 
 
 
 function LoginPage() {
+
+  const dispatch=useDispatch();
+  const navigate=useNavigate();
 
   const [user, setUser] = useState({
     email: "",
@@ -15,7 +21,8 @@ function LoginPage() {
   });
 
   const onLogin = async () => {
-    console.log("Login")
+    dispatch(setLogin({user:"Gaurang"}));
+    navigate('/');
   };
 
   return (
