@@ -20,9 +20,36 @@ function LoginPage() {
     password: "",
   });
 
-  const onLogin = async () => {
-    dispatch(setLogin({user:"Gaurang"}));
-    navigate('/');
+  const onLogin = async (e) => {
+    e.preventDefault();
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+
+    const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/user/signin",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email.value,
+            password: password.value,
+          }),
+        }
+      );
+
+      const json = await response.json();
+      
+      email.value="";
+      password.value="";
+      
+      if(response.status===400){
+        return;
+      }
+
+      dispatch(setLogin({user:{name:json.name,email:json.email,google:0}}));
+      navigate('/');
   };
 
   return (

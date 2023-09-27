@@ -38,9 +38,7 @@ function App() {
 
   ]);
 
-  // console.log(process.env.REACT_APP_CLIENT_ID);
-  const clientId="594726725382-c5ae1fj7urg8ljfm5s5tq9lrjkfirr59.apps.googleusercontent.com";
-  return <GoogleOAuthProvider clientId={clientId}><RouterProvider router={router} /></GoogleOAuthProvider>;
+  return <GoogleOAuthProvider clientId={process.env.REACT_APP_GAPI_CLIENTID}><RouterProvider router={router} /></GoogleOAuthProvider>;
 }
 
 export default App;

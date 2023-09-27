@@ -23,9 +23,11 @@ const Navbar = () => {
         </h1>
       </div>
       <div className="n-right">
+        {user &&
         <h1 className="n-links" onClick={() => navigate("/profile")}>
           Profile
         </h1>
+        }
 
         {user?
         <button className="n-button" onClick={() => dispatch(setLogout())}>

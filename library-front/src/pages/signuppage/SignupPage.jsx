@@ -1,6 +1,6 @@
 
 import React, { useEffect } from "react";
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 
 function SignUpPage() {
 
@@ -11,8 +11,42 @@ function SignUpPage() {
     mobile:""
   });
 
-  const onSignup=async()=>{
-    console.log("signup")
+  const navigate=useNavigate();
+
+  const onSignup=async(e)=>{
+    e.preventDefault();
+    const username=document.getElementById("username");
+    const email = document.getElementById("email");
+    const mobile=document.getElementById("mobile");
+    const password = document.getElementById("password");
+
+    const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/user/signup",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            name:username.value,
+            email: email.value,
+            mobile:mobile.value,
+            password: password.value
+          }),
+        }
+      );
+
+      const json = await response.json();
+      
+      username.value="";
+      email.value="";
+      mobile.value="";
+      password.value="";
+      
+      if(response.status===400){
+        return;
+      }
+      navigate('/login');
   }
 
   return (

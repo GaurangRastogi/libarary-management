@@ -53,22 +53,27 @@ exports.signUp = async (req, res) => {
 
 exports.signIn = async (req, res) => {
   try {
-    const { userCredential, password } = req.body;
+    const {email, password } = req.body;
     //userCredential can be username or useremail
 
 
-    const user = await User.findOne({
-      $or: [{ name: userCredential }, { email: userCredential }]});
+    const user = await User.findOne({ email: email });
 
+    if(!user)
+      throw "Credentials doesn't match";
+    
     const validPassword=await bcryptjs.compare(password,user.password);
+    
+    console.log(user,validPassword);
 
     if (!user || !validPassword) throw "Credentials doesn't match";
 
     res.json({
       message: "User logged in successfully",
-      id: user._id,
       name: user.name,
+      email:user.email
     });
+    
   } catch (err) {
     res.status(400).send({ message: "Error occured " + err });
   }
