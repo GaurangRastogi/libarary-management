@@ -13,6 +13,8 @@ const GoogleLoginComponent = () => {
       onError={() => {
         console.log("Login Failed");
       }}
+
+      width={"300px"}
     />
   );
 };

@@ -16,7 +16,9 @@ function SignUpPage() {
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen py-2">
+    <div className="flex flex-col items-center justify-center min-h-screen py-2 relative">
+
+      <a className="absolute left-10 top-10 text-lg font-medium underline" href="/"> <span className="text-xl font-bold">&larr;</span>Back to Home!</a>
       <h1 className="text-4xl">Signup</h1>
       <hr />
 

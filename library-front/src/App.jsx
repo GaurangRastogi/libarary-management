@@ -5,6 +5,9 @@ import LoginPage from "./pages/loginpage/LoginPage";
 import HomePage from "./pages/homepage/HomePage";
 import SignUpPage from "./pages/signuppage/SignupPage";
 import { GoogleOAuthProvider } from '@react-oauth/google';
+import RentPage from "./pages/rentpage/RentPage";
+import CartPage from "./pages/cartpage/CartPage";
+import ProfilePage from "./pages/profilePage/ProfilePage";
 
 function App() {
   const router = createBrowserRouter([
@@ -19,7 +22,20 @@ function App() {
     {
       path:"/signup",
       element:<SignUpPage/>
+    },
+    {
+      path:"/rented",
+      element:<RentPage/>
+    },
+    {
+      path:"/cart",
+      element:<CartPage/>
+    },
+    {
+      path:"/profile",
+      element:<ProfilePage/>
     }
+
   ]);
 
   // console.log(process.env.REACT_APP_CLIENT_ID);
