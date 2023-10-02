@@ -1,16 +1,16 @@
 const express = require("express");
 const router = express.Router();
-const userController=require("../controller/admin");
+const adminController=require("../controller/admin");
 
 
 //authentication
-router.post('/signup',userController.signUp);
-router.post('/signin',userController.signIn);
+router.post('/signup',adminController.signUp);
+router.post('/signin',adminController.signIn);
 
 //crud
-router.post('/create',userController.create);
-router.post('/update',userController.update);
-router.delete('/delete',userController.delete);
+router.post('/create',adminController.create);
+router.post('/update',adminController.update);
+router.delete('/delete',adminController.delete);
 
 
 
