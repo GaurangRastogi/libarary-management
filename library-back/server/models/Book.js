@@ -14,8 +14,12 @@ const bookSchema = new mongoose.Schema({
         type:String,
         required:true,
     },
-    description:{
+    imageUrl:{
         type:String,
+        required:true
+    },
+    description:{
+        type:String
     },
     //in cart not ordered yet
     remaining:{

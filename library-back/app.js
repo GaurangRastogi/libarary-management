@@ -13,6 +13,10 @@ app.use(express.urlencoded({ extended: true }));
 const userRoutes = require("./server/routes/user");
 app.use("/user", userRoutes);
 
+//for admin Routes
+const adminRoutes = require("./server/routes/admin");
+app.use("/admin", adminRoutes);
+
 app.listen(port, () => {
   console.log(`Listening to port ${port}`);
 });

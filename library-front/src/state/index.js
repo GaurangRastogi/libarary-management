@@ -2,7 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 import { googleLogout } from "@react-oauth/google";
 
 const initialState ={
-    user:null
+    user:null,
+    admin:null
 };
 
 export const authSlice = createSlice({
@@ -14,14 +15,18 @@ export const authSlice = createSlice({
         },
         setLogout:(state)=>{
 
-            if(state.user.google===1){
+            if(state.user && state.user.google===1){
                 googleLogout();
             }
 
             state.user=null;
+            state.admin=null;
+        },
+        setAdminLogin:(state,action)=>{
+            state.admin=action.payload.admin;
         }
     }
 })
 
-export const {setLogin,setLogout}=authSlice.actions;
+export const {setLogin,setLogout,setAdminLogin}=authSlice.actions;
 export default authSlice.reducer;

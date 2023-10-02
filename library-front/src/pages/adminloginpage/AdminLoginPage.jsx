@@ -2,20 +2,16 @@
 
 import {Link, useNavigate} from "react-router-dom"
 import React, { useEffect, useState } from "react";
-import GoogleLoginComponent from "../../component/google/login";
-// import { GoogleLogin } from "@react-oauth/google";
 import { useDispatch} from "react-redux";
-import { setLogin } from "../../state/index";
+import { setAdminLogin } from "../../state/index";
 
 
-
-
-function LoginPage() {
+function AdminLoginPage() {
 
   const dispatch=useDispatch();
   const navigate=useNavigate();
 
-  const [user, setUser] = useState({
+  const [admin, setAdmin] = useState({
     email: "",
     password: "",
   });
@@ -26,7 +22,7 @@ function LoginPage() {
     const password = document.getElementById("password");
 
     const response = await fetch(
-        process.env.REACT_APP_BACKEND_URL + "/user/signin",
+        process.env.REACT_APP_BACKEND_URL + "/admin/signin",
         {
           method: "POST",
           headers: {
@@ -48,16 +44,14 @@ function LoginPage() {
         return;
       }
 
-      dispatch(setLogin({user:{name:json.name,email:json.email,google:0}}));
-      navigate('/');
+      dispatch(setAdminLogin({admin:{email:json.email,google:0}}));
+      navigate('/admin');
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2 relative">
 
       <a className="absolute left-10 top-10 text-lg font-medium underline" href="/"> <span className="text-xl font-bold">&larr;</span>Back to Home!</a>
-      <a className="absolute right-10 top-10 text-lg font-medium underline" href="/admin/login">Admin!</a>
-      
       <h1 className="text-4xl">Login</h1>
       <hr />
       <div className="flex flex-col w-1/3">
@@ -66,8 +60,8 @@ function LoginPage() {
           className=" text-black text-xl p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focur:border-gray-600"
           id="email"
           type="text"
-          value={user.email}
-          onChange={(e) => setUser({ ...user, email: e.target.value })}
+          value={admin.email}
+          onChange={(e) => setAdmin({ ...admin, email: e.target.value })}
           placeholder="email"
         />
       </div>
@@ -78,8 +72,8 @@ function LoginPage() {
           className="text-black text-xl p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focur:border-gray-600"
           id="password"
           type="password"
-          value={user.password}
-          onChange={(e) => setUser({ ...user, password: e.target.value })}
+          value={admin.password}
+          onChange={(e) => setAdmin({ ...admin, password: e.target.value })}
           placeholder="password"
         />
       </div>
@@ -91,12 +85,8 @@ function LoginPage() {
         Login Here!
       </button>
 
-      <GoogleLoginComponent/>
-      
-      <Link to="/signup" className="m-4 mt-10 text-lg hover:underline">Register here! SignUp</Link>
-
     </div>
   );
 }
 
-export default LoginPage;
+export default AdminLoginPage;

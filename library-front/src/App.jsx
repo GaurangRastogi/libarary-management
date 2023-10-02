@@ -8,6 +8,8 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 import RentPage from "./pages/rentpage/RentPage";
 import CartPage from "./pages/cartpage/CartPage";
 import ProfilePage from "./pages/profilePage/ProfilePage";
+import AdminLoginPage from "./pages/adminloginpage/AdminLoginPage";
+import AdminPage from "./pages/adminpage/AdminPage";
 
 function App() {
   const router = createBrowserRouter([
@@ -18,6 +20,10 @@ function App() {
     {
       path:"/login",
       element:<LoginPage/>
+    },
+    {
+      path:"/admin/login",
+      element:<AdminLoginPage/>
     },
     {
       path:"/signup",
@@ -34,6 +40,10 @@ function App() {
     {
       path:"/profile",
       element:<ProfilePage/>
+    },
+    {
+      path:"/admin",
+      element:<AdminPage/>
     }
 
   ]);

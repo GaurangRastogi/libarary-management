@@ -8,6 +8,13 @@ const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
+  const admin=useSelector((state)=>state.admin);
+
+
+  const utilityLogout=()=>{
+    dispatch(setLogout());
+    navigate('/');
+  }
   return (
     <div className="n">
       <div className="n-left">
@@ -15,13 +22,21 @@ const Navbar = () => {
         <h1 className="n-links" onClick={() => navigate("/")}>
           Home
         </h1>
-        <h1 className="n-links" onClick={() => navigate("/cart")}>
+
+        {admin &&<h1 className="n-links" onClick={() => navigate("/admin")}>
+          Admin
+        </h1>}
+
+        {user &&<h1 className="n-links" onClick={() => navigate("/cart")}>
           Cart
         </h1>
-        <h1 className="n-links" onClick={() => navigate("/rented")}>
+        }
+        {user && <h1 className="n-links" onClick={() => navigate("/rented")}>
           Rented
         </h1>
+        }
       </div>
+
       <div className="n-right">
         {user &&
         <h1 className="n-links" onClick={() => navigate("/profile")}>
@@ -29,8 +44,8 @@ const Navbar = () => {
         </h1>
         }
 
-        {user?
-        <button className="n-button" onClick={() => dispatch(setLogout())}>
+        {user||admin?
+        <button className="n-button" onClick={() => utilityLogout()}>
           Logout
         </button>
         :

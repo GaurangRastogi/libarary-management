@@ -1,0 +1,15 @@
+.sb{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.16);
+    border-radius: 10px;
+    width: 50%;
+    margin: auto;
+}
+.searchBar{
+    width: 100%;
+    outline: transparent solid 2px;
+    padding: 10px 20px;
+    font-size: x-large;
+}
