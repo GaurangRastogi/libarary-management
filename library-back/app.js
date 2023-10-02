@@ -9,6 +9,10 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//for common routes, i.e, displaying all books
+const commonRoutes = require("./server/routes/common");
+app.use("/common", commonRoutes);
+
 //for user Routes
 const userRoutes = require("./server/routes/user");
 app.use("/user", userRoutes);

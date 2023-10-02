@@ -51,7 +51,6 @@ exports.signUp = async (req, res) => {
 exports.signIn = async (req, res) => {
   try {
     const {email, password } = req.body;
-    console.log(email,password);
 
     const admin = await Admin.findOne({ email: email });
 
@@ -76,7 +75,71 @@ exports.signIn = async (req, res) => {
 exports.create=async(req,res)=>{
 
   try{
+    const {name,category,author,imageUrl,description}=req.body;
+
+    const alreadyPresent=await Book.findOne({name:name});
+
+    if(alreadyPresent){
+      throw "Book with this name already present";
+    }
+
+    const book=new Book({
+      name,
+      category,
+      author,
+      imageUrl,
+      description
+    })
+
+    await book.save();
+
+
+    res.status(200).send({
+      type: "success",
+      message: "New book is added successfully",
+    });
+
+  }
+  catch(err){
+    res.status(400).send({ message: "Error occured " + err });
+  }
+}
+
+
+exports.update=async(req,res)=>{
+  try{
+    const {name,category,author,imageUrl,description}=req.body;
+
+    const notPresent=await Book.findOne({name:name});
+
+    if(!notPresent){
+      throw "Book with this name is not present!";
+    }
+
+    const newBook=await Book.findOneAndUpdate({name:name},{category,author,imageUrl,description});
     
+    res.status(200).send({
+      type: "success",
+      message: "Book is updated successfully!",
+    });
+
+  }
+  catch(err){
+    res.status(400).send({ message: "Error occured " + err });
+  }
+}
+
+exports.delete=async(req,res)=>{
+  try{
+    const {name}=req.body;
+
+    const deleted=await Book.deleteOne({name:name});
+
+    res.status(200).send({
+      type: "success",
+      message: `Book ${name} is deleted successfully!`,
+    });
+
   }
   catch(err){
     res.status(400).send({ message: "Error occured " + err });
