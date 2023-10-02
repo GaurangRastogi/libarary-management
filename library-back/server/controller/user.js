@@ -78,3 +78,95 @@ exports.signIn = async (req, res) => {
     res.status(400).send({ message: "Error occured " + err });
   }
 };
+
+
+
+exports.displayRented=async(req,res)=>{
+  try{
+    const {name}=req.body;
+
+    const rented=await User.findOne({name:name},'rent');
+
+    res.json({
+      type: "success",
+      message: "Fetching rented books!",
+      books:rented
+    });
+
+  }
+  catch (err) {
+    res.status(400).send({ message: "Error occured " + err });
+  }
+}
+
+exports.displayCarted=async(req,res)=>{
+  try{
+    const {name}=req.body;
+
+    const rented=await User.findOne({name:name},'cart');
+
+    res.json({
+      type: "success",
+      message: "Fetching carted books!",
+      books:rented
+    });
+
+  }
+  catch (err) {
+    res.status(400).send({ message: "Error occured " + err });
+  }
+}
+
+exports.addToCart=async(req,res)=>{
+  try{
+    const {name,bookId}=req.body;
+
+    const _addToCart=await User.updateOne({ name:name}, { $push: { cart: bookId } });
+
+
+    res.json({
+      type: "success",
+      message: "Added to cart!",
+    });
+  }
+  catch (err) {
+    res.status(400).send({ message: "Error occured " + err });
+  }
+}
+
+
+exports.rentBook=async(req,res)=>{
+  try{
+
+    const {name,bookId}=req.body;
+
+    const _rentBook=await User.updateOne({name:name},{$push:{rent:bookId},$pull:{cart:bookId}});
+
+
+    res.json({
+      type: "success",
+      message: "Book is rented!",
+    });
+
+  }
+  catch(err){
+    res.status(400).send({message:"Error occured "+err});
+  }
+}
+
+
+exports.removeFromCart=async(req,res)=>{
+  try{
+    const {name,bookId}=req.body;
+
+    const removeFromCart=await User.updateOneOne({name:name},{$pull:{cart:bookId}});
+
+    res.json({
+      type: "success",
+      message: "Book is removed from cart!",
+    });
+  }
+  catch(err){
+    res.status(400).send({message:"Error occured "+err});
+  }
+}
