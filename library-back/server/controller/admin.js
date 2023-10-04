@@ -1,6 +1,7 @@
 const Admin=require('../models/Admin');
 const Book=require('../models/Book');
 const bcryptjs=require('bcryptjs');
+const jwt=require('jsonwebtoken');
 
 
 require("../dbConfig/database");
@@ -61,9 +62,15 @@ exports.signIn = async (req, res) => {
     
     if (!admin || !validPassword) throw "Credentials doesn't match";
 
+
+    
+    //Making web token using jwt, and so that creating session
+    const token = jwt.sign({id:admin._id},process.env.JWT_SECRET,{ expiresIn: "3d" });
+
     res.json({
       message: "Admin logged in successfully",
-      email:admin.email
+      email:admin.email,
+      token:token
     });
     
   } catch (err) {

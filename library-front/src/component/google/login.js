@@ -10,15 +10,33 @@ const GoogleLoginComponent = () => {
   const dispatch=useDispatch();
   const navigate=useNavigate();
 
-  const onLogin = (credential) => {
-    dispatch(setLogin({user:credential,google:1}));
+  const onLogin = async (name,email) => {
+    //special case, in this case it's already taken care by oauth
+    //so random token is created oauth, which will handled specially in middleware,at backend
+
+    const response = await fetch(
+        process.env.REACT_APP_BACKEND_URL + "/user/signingoogle",
+        {
+          method: "POST",
+          headers: {
+            "Content-type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            name:name
+          }),
+        }
+    );
+
+    const json = await response.json();
+    dispatch(setLogin({user:{name:name,email:email,token:json.token,google:1}}));
     navigate('/');
   };
   return (
     <GoogleLogin
-      onSuccess={(credentialResponse) => {
+      onSuccess={async (credentialResponse) => {
         const credential=decode(credentialResponse.credential);
-        onLogin(credential);
+        await onLogin(credential.name,credential.email);
       }}
       onError={() => {
         console.log("Login Failed");

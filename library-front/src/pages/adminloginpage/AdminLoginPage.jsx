@@ -44,7 +44,7 @@ function AdminLoginPage() {
         return;
       }
 
-      dispatch(setAdminLogin({admin:{email:json.email,google:0}}));
+      dispatch(setAdminLogin({admin:{email:json.email,token:json.token,google:0}}));
       navigate('/admin');
   };
 

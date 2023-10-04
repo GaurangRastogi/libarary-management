@@ -37,7 +37,7 @@ function LoginPage() {
             password: password.value,
           }),
         }
-      );
+    );
 
       const json = await response.json();
       
@@ -48,7 +48,7 @@ function LoginPage() {
         return;
       }
 
-      dispatch(setLogin({user:{name:json.name,email:json.email,google:0}}));
+      dispatch(setLogin({user:{name:json.name,email:json.email,token:json.token,google:0}}));
       navigate('/');
   };
 
