@@ -8,9 +8,9 @@ router.post('/signup',adminController.signUp);
 router.post('/signin',adminController.signIn);
 
 //crud
-router.post('/create',adminController.create);
-router.post('/update',adminController.update);
-router.delete('/delete',adminController.delete);
+router.post('/create',verifyToken,adminController.create);
+router.post('/update',verifyToken,adminController.update);
+router.delete('/delete',verifyToken,adminController.delete);
 
 
 

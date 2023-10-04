@@ -1,6 +1,3 @@
-//added in future work
-//can't apply here, since i'm using both oauth and my registration
-
 const jwt=require('jsonwebtoken');
 
 //next parameter allow to make function continue

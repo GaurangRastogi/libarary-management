@@ -15,19 +15,19 @@ router.post('/signingoogle',userController.signInGoogle);
 router.get('/rented',verifyToken,userController.displayRented);
 
 //carted
-router.get('/carted',userController.displayCarted);
+router.get('/carted',verifyToken,userController.displayCarted);
 
 //add to cart
-router.post('/addToCart',userController.addToCart);
+router.post('/addToCart',verifyToken,userController.addToCart);
 
 
 //-----------in add to cart---------------
 
 //rent -> after one month remove from rent
-router.post('/rentBook',userController.rentBook);
+router.post('/rentBook',verifyToken,userController.rentBook);
 
 //remove from cart
-router.post('/removeBook',userController.removeFromCart);
+router.post('/removeBook',verifyToken,userController.removeFromCart);
 
 
 
