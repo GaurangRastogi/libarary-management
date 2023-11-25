@@ -82,7 +82,11 @@ exports.signIn = async (req, res) => {
 exports.create=async(req,res)=>{
 
   try{
-    const {name,category,author,imageUrl,description}=req.body;
+    
+    const {name,category,author,imageUrl,description,numberOfBooks}=req.body;
+    if(!name || !category || !author || !imageUrl || !description || !numberOfBooks){
+      throw "Details are not entered properly!";
+    }
 
     const alreadyPresent=await Book.findOne({name:name});
 
@@ -95,7 +99,8 @@ exports.create=async(req,res)=>{
       category,
       author,
       imageUrl,
-      description
+      description,
+      numberOfBooks
     })
 
     await book.save();
@@ -115,15 +120,27 @@ exports.create=async(req,res)=>{
 
 exports.update=async(req,res)=>{
   try{
-    const {name,category,author,imageUrl,description}=req.body;
+    let {name,category,author,imageUrl,description,numberOfBooks}=req.body;
+    
+    if(!name){
+      throw "Name should be given!";
+    }
+    
+    const present=await Book.findOne({name:name});
+    
 
-    const notPresent=await Book.findOne({name:name});
-
-    if(!notPresent){
+    if(!present){
       throw "Book with this name is not present!";
     }
 
-    const newBook=await Book.findOneAndUpdate({name:name},{category,author,imageUrl,description});
+    //if null, restore default values
+    category=(!category)?present.category:category;
+    author=(!author)?present.author:author;
+    imageUrl=(!imageUrl)?present.imageUrl:imageUrl;
+    description=(!description)?present.description:description;
+    numberOfBooks=(!numberOfBooks)?present.numberOfBooks:numberOfBooks;
+
+    const newBook=await Book.findOneAndUpdate({name:name},{category,author,imageUrl,description,numberOfBooks});
     
     res.status(200).send({
       type: "success",
@@ -139,7 +156,6 @@ exports.update=async(req,res)=>{
 exports.delete=async(req,res)=>{
   try{
     const {name}=req.body;
-
     const deleted=await Book.deleteOne({name:name});
 
     res.status(200).send({

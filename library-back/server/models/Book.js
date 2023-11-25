@@ -21,8 +21,8 @@ const bookSchema = new mongoose.Schema({
     description:{
         type:String
     },
-    //in cart not ordered yet
-    remaining:{
+    //in cart not ordered yet also in numberOfBooks
+    numberOfBooks:{
         type:Number,
         required:true,
         default:0

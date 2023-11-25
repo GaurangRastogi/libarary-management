@@ -98,8 +98,6 @@ exports.signInGoogle = async (req, res) => {
     //check if user exists
     const user = await User.findOne({ email: email });
 
-    console.log(user, name, email);
-
     if (user !== null) {
       //Making web token using jwt, and so that creating session
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {

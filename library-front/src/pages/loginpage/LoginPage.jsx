@@ -8,7 +8,7 @@ import { useDispatch} from "react-redux";
 import { setLogin } from "../../state/index";
 
 
-
+ 
 
 function LoginPage() {
 
@@ -63,7 +63,7 @@ function LoginPage() {
       <div className="flex flex-col w-1/3">
         <label htmlFor="email" className="text-2xl">Email</label>
         <input
-          className=" text-black text-xl p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focur:border-gray-600"
+          className=" text-black text-xl p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
           id="email"
           type="text"
           value={user.email}
@@ -75,7 +75,7 @@ function LoginPage() {
       <div className="flex flex-col w-1/3">
         <label htmlFor="password" className="text-2xl">Password</label>
         <input
-          className="text-black text-xl p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focur:border-gray-600"
+          className="text-black text-xl p-4 border border-gray-300 rounded-lg mb-4 focus:outline-none focus:border-gray-600"
           id="password"
           type="password"
           value={user.password}
@@ -86,7 +86,7 @@ function LoginPage() {
 
       <button
         onClick={onLogin}
-        className="w-1/3 p-3 m-4 text-xl text-white bg-pink-600 border border-pink-300 rounded-lg mb-4 focus:outline-none focur:border-pink-700"
+        className="w-1/3 p-3 m-4 text-xl text-white bg-pink-600 border border-pink-300 rounded-lg mb-4 focus:outline-none focus:border-pink-700"
       >
         Login Here!
       </button>
