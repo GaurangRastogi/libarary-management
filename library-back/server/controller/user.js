@@ -138,14 +138,24 @@ exports.signInGoogle = async (req, res) => {
 
 exports.displayRented = async (req, res) => {
   try {
-    const { name } = req.body;
+    const {email} = req.body;
 
-    const rented = await User.findOne({ name: name }, "rent");
+    const rentedBooks = await User.findOne({ email: email });
+
+    const rented=rentedBooks.rent;
+    
+    let books=[];
+    for await(const item of rented){
+      const bookId=item;  
+      const book=await Book.findOne({_id:bookId});
+      if(book)
+        books.push(book);
+    }
 
     res.json({
       type: "success",
       message: "Fetching rented books!",
-      books: rented,
+      books: books,
     });
   } catch (err) {
     res.status(400).send({ message: "Error occured " + err });
@@ -154,14 +164,24 @@ exports.displayRented = async (req, res) => {
 
 exports.displayCarted = async (req, res) => {
   try {
-    const { name } = req.body;
+    const {email} = req.body;
 
-    const rented = await User.findOne({ name: name }, "cart");
+    const cartedBooks = await User.findOne({ email: email }, "cart");
+    const carted=cartedBooks.cart;
+
+
+    let books=[];
+    for await(const item of carted){
+      const bookId=item;  
+      const book=await Book.findOne({_id:bookId});
+      if(book)
+        books.push(book);
+    }
 
     res.json({
       type: "success",
       message: "Fetching carted books!",
-      books: rented,
+      books: books
     });
   } catch (err) {
     res.status(400).send({ message: "Error occured " + err });
@@ -170,10 +190,9 @@ exports.displayCarted = async (req, res) => {
 
 exports.addToCart = async (req, res) => {
   try {
-    const { name, bookId } = req.body;
-
+    const { email, bookId } = req.body;
     const _addToCart = await User.updateOne(
-      { name: name },
+      { email: email },
       { $push: { cart: bookId } }
     );
 
@@ -186,13 +205,52 @@ exports.addToCart = async (req, res) => {
   }
 };
 
+exports.bookInCartOrRent = async(req,res)=>{
+  try{
+    const {email,bookId}=req.body;
+
+    const user = await User.findOne({ email: email });
+
+    const carted=user.cart;
+    const foundItemInCart = carted.find(id=> id===bookId);
+
+    const rented=user.rent;
+    const foundItemInRent=rented.find(id=> id===bookId);
+
+    const foundItem=(foundItemInCart||foundItemInRent);
+    
+    let message;
+    if(!foundItem){
+      message=true;
+    }
+    else{
+      message=false;
+    }
+    
+    res.json({
+      type: "success",
+      message: message
+    });
+  }
+  catch(err){
+    res.status(400).send({ message: "Error occured " + err });
+  }
+}
+
 exports.rentBook = async (req, res) => {
   try {
-    const { name, bookId } = req.body;
+    const { email, bookId } = req.body;
 
+    //if number of books is > 0, then only this call is possible
+    //handled in frontend
+    
     const _rentBook = await User.updateOne(
-      { name: name },
-      { $push: { rent: bookId }, $pull: { cart: bookId } }
+      { email: email },
+      {
+        $push: { rent: bookId },
+        $pull: { cart: bookId },
+        $inc: { numberOfBooks: -1 },
+      }
     );
 
     res.json({
@@ -206,16 +264,34 @@ exports.rentBook = async (req, res) => {
 
 exports.removeFromCart = async (req, res) => {
   try {
-    const { name, bookId } = req.body;
+    const { email, bookId } = req.body;
 
-    const removeFromCart = await User.updateOneOne(
-      { name: name },
+    const removeFromCart = await User.updateOne(
+      { email: email},
       { $pull: { cart: bookId } }
     );
 
     res.json({
       type: "success",
       message: "Book is removed from cart!",
+    });
+  } catch (err) {
+    res.status(400).send({ message: "Error occured " + err });
+  }
+};
+
+exports.removeFromRent = async (req, res) => {
+  try {
+    const { email, bookId } = req.body;
+
+    const removeFromRent = await User.updateOne(
+      { email: email},
+      { $pull: { rent: bookId }, $inc: { numberOfBooks: 1 } }
+    );
+
+    res.json({
+      type: "success",
+      message: "Book is removed from rent!",
     });
   } catch (err) {
     res.status(400).send({ message: "Error occured " + err });

@@ -8,6 +8,9 @@ router.get('/display',commonController.display);
 //display book by id-addTocart and rent return id's of book only
 router.get('/displayById',commonController.displayById);
 
+//get by name
+router.get('/displayByName',commonController.displayBookByAuthor);
+
 //get by author
 router.get('/displayByAuthor',commonController.displayBookByAuthor);
 

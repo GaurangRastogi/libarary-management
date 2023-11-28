@@ -12,13 +12,15 @@ router.post('/signingoogle',userController.signInGoogle);
 //user utilites routes
 
 // rented
-router.get('/rented',verifyToken,userController.displayRented);
+router.post('/rented',verifyToken,userController.displayRented);
 
 //carted
-router.get('/carted',verifyToken,userController.displayCarted);
+router.post('/carted',verifyToken,userController.displayCarted);
 
 //add to cart
 router.post('/addToCart',verifyToken,userController.addToCart);
+
+router.post('/bookInCartOrRent',verifyToken,userController.bookInCartOrRent);
 
 
 //-----------in add to cart---------------
@@ -27,8 +29,11 @@ router.post('/addToCart',verifyToken,userController.addToCart);
 router.post('/rentBook',verifyToken,userController.rentBook);
 
 //remove from cart
-router.post('/removeBook',verifyToken,userController.removeFromCart);
+router.post('/removeBookFromCart',verifyToken,userController.removeFromCart);
+
+//remove from rent
+router.post('/removeBookFromRent',verifyToken,userController.removeFromRent);
 
 
 
-module.exports=router;
+module.exports=router; 

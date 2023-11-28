@@ -1,7 +1,60 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import './Book.css';
+import { useSelector } from "react-redux";
 
-const Book = ({ book }) => {
+const Book = ({ book}) => {
+
+  const user = useSelector((state)=>state.user);
+  const [notInCartOrRent,setNotInCartOrRent]=useState(true);
+
+  const utility=async (e)=>{
+    e.preventDefault();
+
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL+"/user/addToCart",
+      {
+        method:"POST",
+        headers: {
+            "Content-type":"application/json",
+            Authorization: `Bearer ${user.token}`
+        },
+        body:JSON.stringify({
+          email:user.email,
+          bookId:book._id
+        })
+      }
+    )
+
+    const json = await response.json();
+    inCartOrRent();
+    return;
+  }
+
+  const inCartOrRent=async()=>{
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL+"/user/bookInCartOrRent",
+      {
+        method:"POST",
+        headers: {
+            "Content-type":"application/json",
+            Authorization: `Bearer ${user.token}`
+        },
+        body:JSON.stringify({
+          email:user.email,
+          bookId:book._id
+        })
+      }
+    )
+    const json=await response.json();
+    setNotInCartOrRent(json.message);
+  }
+
+  useEffect(()=>{
+    if(user)
+      inCartOrRent();
+  },[])
+
+
   return (
       <div className="h-book">
         <div className="h-book-left">
@@ -15,9 +68,9 @@ const Book = ({ book }) => {
 
           <p className="h-book-desc">{book.description}</p>
 
-          <button className="w-1/1 p-3 m-4 text-xl text-white bg-pink-600 border border-pink-300 rounded-lg mb-4 focus:outline-none focus:border-green-700">
+          {user && notInCartOrRent && <button className="w-1/1 p-3 m-4 text-xl text-white bg-pink-600 border border-pink-300 rounded-lg mb-4 focus:outline-none focus:border-green-700" onClick={utility}>
             Add to Cart
-          </button>
+          </button>}
         </div>
       </div>
   );

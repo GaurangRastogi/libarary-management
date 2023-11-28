@@ -1,25 +1,68 @@
-import React,{useEffect} from 'react'
+import React,{useEffect,useState} from 'react'
 import './CartPage.css';
 import Navbar from '../../component/Navbar/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import SearchBar from '../../component/SearchBar/SearchBar';
+import BookCartPage from '../../component/BookCartPage/BookCartPage';
 
 const CartPage = () => {
 
   const navigate=useNavigate();
   const user = useSelector((state) => state.user);
 
+  const [books, setBooks] = useState();
+  const [toggle,setToggle]=useState(0);
+
+  const change=()=>{
+    setToggle(!toggle);
+  }
+
+  const utility = async () => {
+    const response = await fetch(
+      process.env.REACT_APP_BACKEND_URL + "/user/carted",
+      {
+        method:"POST",
+        headers: {
+            "Content-type":"application/json",
+            Authorization: `Bearer ${user.token}`
+        },
+        body:JSON.stringify({email:user.email})
+
+      }
+    );
+    const json = await response.json();
+    setBooks(json.books);
+  };
+
+
   useEffect(()=>{
     if(user===null)
       navigate('/');
-  },[]);
+    else
+      utility();
+  },[toggle]);
 
   return (
     <div className='c'>
         <Navbar/>
-        CartPage
+        
+        <p className="c-heading">
+          Navigating the Depths of Knowledge with our Advanced{" "}
+          <span>eLibrary</span> System for Seamless Resource Organization and
+          Retrieval.
+        </p>
+
+        <SearchBar />
+
+        <div className="c-books">
+          {!books ? ( <h1>No Books are added in Cart!</h1>) : 
+          (
+            books.map((book) => <BookCartPage book={book} toggle={change} key={book._id}/>)
+          )}
+        </div>
     </div>
   )
 }
 
-export default CartPage
+export default CartPage;

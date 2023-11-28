@@ -36,7 +36,7 @@ const HomePage = () => {
       <div className="h-books">
         {!books ? ( <h1>No Books in Library!</h1>) : 
         (
-          books.map((book) => <Book book={book} />)
+          books.map((book) => <Book book={book} key={book._id}/>)
         )}
       </div>
     </div>
